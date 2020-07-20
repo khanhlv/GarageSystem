@@ -15,6 +15,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 import com.garage.common.anotation.AllowAnonymous;
+import com.garage.common.exception.AuthorizationException;
 import com.garage.common.exception.SystemException;
 import com.garage.utils.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -50,20 +51,10 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
 
         if (username != null) {
             if (!jwtTokenUtil.validateToken(jwt, username)) {
-                throw new SystemException("REST signature failed validation.");
+                throw new AuthorizationException("REST signature failed validation.");
             }
         }
 
         return true;
     }
-
-    private String returnPath(HttpServletRequest request) throws UnsupportedEncodingException {
-        String uri = request.getRequestURI().replaceFirst(request.getContextPath(), StringUtils.EMPTY);
-        String query = request.getQueryString();
-        if (StringUtils.isEmpty(query)) {
-            return uri;
-        }
-        return uri.concat("?").concat(URLEncoder.encode(query, StandardCharsets.UTF_8.toString()));
-    }
-
 }
