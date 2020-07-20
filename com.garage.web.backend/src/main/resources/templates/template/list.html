@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/default :: default-fragment(
+                                                ~{::title},
+                                                ~{:: #style-resources},
+                                                ~{:: #js-resources},
+                                                ~{:: #main-content}
+                                               )}">
+<head>
+    <title>Danh sách mẫu hợp đồng</title>
+    <th:block id="style-resources"></th:block>
+</head>
+<body>
+    <div id="main-content">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Danh sách mẫu hợp đồng</h3>
+            </div>
+            <div class="col-md-7 align-self-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Danh sách mẫu hợp đồng</li>
+                </ol>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-lg-12 ">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tìm kiếm</h4>
+                        <form method="GET" th:action="@{/template/list}" th:object="${form}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Tên mẫu hợp đồng</label>
+                                        <input type="text" class="form-control" th:field="*{templateName}" placeholder="Tên mẫu hợp đồng">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Danh mục</label>
+                                        <select class="form-control" th:field="*{categoryId}">
+                                            <option value="-1">Tất cả</option>
+                                            <option th:each="category: ${categoryList}"
+                                                    th:value="${category.getCategoryId()}"
+                                                    th:text="${category.getCategoryName()}">VPBank</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Công ty</label>
+                                        <select class="form-control" th:field="*{companyId}" placeholder="Chọn công ty">
+                                            <option value="-1">Tất cả</option>
+                                            <option th:each="company: ${companyList}"
+                                                    th:value="${company.getCompanyId()}"
+                                                    th:text="${company.getCompanyName()}">VPBank</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Tình trạng</label>
+                                        <select class="form-control" th:field="*{status}">
+                                            <option value="-1">Tất cả</option>
+                                            <option value="1">Hoạt động</option>
+                                            <option value="0">Không hoạt động</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-info btn-rounded m-t-10">Tìm kiếm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Danh sách</h4>
+                        <a th:href="@{/template/add}"><button type="button" class="btn btn-info btn-rounded m-t-10 float-right">Thêm mới</button></a>
+                        <div class="table-responsive">
+                            <table class="table color-bordered-table muted-bordered-table m-t-30">
+                                <thead>
+                                <tr>
+                                    <th width="10px">STT</th>
+                                    <th>Tên mẫu</th>
+                                    <th>Danh mục</th>
+                                    <th>Công ty</th>
+                                    <th>File</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Tình trạng</th>
+                                    <th width="80px" class="text-center"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="template, row: ${templateList}">
+                                        <td th:text="${row.count}"></td>
+                                        <td th:text="${template.getTemplateName()}">khanhlv5</td>
+                                        <td th:text="${template.getCategoryName()}">khanhlv5</td>
+                                        <td th:text="${template.getCompanyName()}">khanhlv5</td>
+                                        <td th:text="${template.getFileCount()}">1</td>
+                                        <td th:text="${#dates.format(template.getCreatedDate(), 'dd/MM/yyyy')}">14/01/2020</td>
+                                        <td th:text="${template.getStatus() == 1 ? 'Hoạt động' : 'Không hoạt động'}">Hoạt động</td>
+                                        <td class="text-center">
+                                            <a data-toggle="tooltip" title="Sửa" th:href="${'/template/edit/' + template.getTemplateId()}"><i class="fas fa-edit"></i></a>
+                                            <a data-toggle="tooltip" title="Xóa" onclick="return confirm('Bạn có thật sự muốn xóa bản ghi?');"
+                                               th:href="${'/template/delete/' + template.getTemplateId()}"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="pagination-box">
+                            <ul id="pagination" class="pagination-sm"
+                                th:attr="data-total=${form.getTotalRecord()}, data-size=${form.getLimit()}, data-page=${form.getPage()}"
+                                data-url="/template/list"></ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block id="js-resources"></th:block>
+</body>
+</html>

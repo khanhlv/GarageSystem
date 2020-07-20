@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/default :: default-fragment(
+                                                ~{::title},
+                                                ~{:: #style-resources},
+                                                ~{:: #js-resources},
+                                                ~{:: #main-content}
+                                               )}">
+<head>
+    <title>Danh sách hợp đồng</title>
+    <th:block id="style-resources"></th:block>
+</head>
+<body>
+    <div id="main-content">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row page-titles">
+            <div class="col-md-5 align-self-center">
+                <h3 class="text-themecolor">Danh sách hợp đồng</h3>
+            </div>
+            <div class="col-md-7 align-self-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Hợp đồng</li>
+                </ol>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="row">
+            <div class="col-lg-12 ">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Tìm kiếm hợp đồng</h4>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tên hợp đồng</label>
+                                        <input type="text" class="form-control" placeholder="Tên hợp đồng">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Mã hợp đồng</label>
+                                        <input type="text" class="form-control" placeholder="Mã hợp đồng">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tình trạng</label>
+                                        <select class="form-control">
+                                            <option>Tất cả</option>
+                                            <option>Đang xử lý</option>
+                                            <option>Chưa thành toán</option>
+                                            <option>Đã thành toán</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Chủ đầu tư</label>
+                                        <input type="text" class="form-control" placeholder="Chủ đầu tư">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Người dùng</label>
+                                        <input type="text" class="form-control" placeholder="Người dùng">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Mẫu hợp đồng</label>
+                                        <select class="form-control">
+                                            <option>Tất cả</option>
+                                            <option>Hợp đồng 2018</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-info btn-rounded m-t-10">Tìm kiếm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Danh sách hợp đồng</h4>
+                        <a th:href="@{/contract/add}"><button type="button" class="btn btn-info btn-rounded m-t-10 float-right">Thêm mới</button></a>
+                        <div class="table-responsive">
+                            <table class="table color-bordered-table muted-bordered-table m-t-30">
+                                <thead>
+                                    <tr>
+                                        <th width="10px">STT</th>
+                                        <th>Số hợp đồng</th>
+                                        <th>Ngày ký</th>
+                                        <th>Ngày bắt đầu</th>
+                                        <!--<th>Tên Gói thầu</th>-->
+                                        <!--<th>Tên chủ quản đầu tư</th>-->
+                                        <th>Tên chủ đầu tư</th>
+                                        <th>Người phụ trách</th>
+                                        <th>Thời gian thực hiện HĐ</th>
+                                        <th>Tình trạng</th>
+                                        <th width="150px" class="text-center">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>01/2019/HĐTV</td>
+                                        <td>06/01/2019</td>
+                                        <td>06/01/2019</td>
+                                        <!--<td>Mua sắm và lắp đặt máy CT Scanner 32 lát cắt và các phụ kiện thuộc dự án: Bệnh viện Đa khoa Khu vực Quảng Nam</td>-->
+                                        <!--<td>ỦY BAN NHÂN DÂN TỈNH QUẢNG NAM</td>-->
+                                        <td>BVĐK KHU VỰC QUẢNG NAM</td>
+                                        <td>khanhlv5</td>
+                                        <td>45 ngày</td>
+                                        <td>Đang xử lý</td>
+                                        <td class="text-center">
+                                            <a href="/user/edit/1">Tải</a> | <a href="/user/edit/1">Sửa</a> | <a href="/user/delete/1">Xóa</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block id="js-resources"></th:block>
+</body>
+</html>
