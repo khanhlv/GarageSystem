@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(value = "/", description = "API Test")
 public class HomeController {
+
     @GetMapping("/")
     @AllowAnonymous
     @ApiOperation(value = "Test API Home")

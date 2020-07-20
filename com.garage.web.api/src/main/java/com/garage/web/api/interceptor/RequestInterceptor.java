@@ -1,4 +1,4 @@
-package com.garage.common.interceptor;
+package com.garage.web.api.interceptor;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -9,23 +9,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 import com.garage.common.anotation.AllowAnonymous;
+import com.garage.common.exception.SystemException;
+import com.garage.utils.JwtTokenUtil;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RequestInterceptor extends HandlerInterceptorAdapter {
-    private static final Logger logger = LoggerFactory.getLogger(RequestInterceptor.class);
 
-    public RequestInterceptor() {
-    }
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         if (handler instanceof ResourceHttpRequestHandler) {
             return true;
@@ -37,32 +38,21 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-//        String returnPath = returnPath(request);
-//
-//        if (returnPath.contains("/login")
-//                || returnPath.contains("/error")) {
-//            return true;
-//        }
-//
-//        HttpSession session = request.getSession();
-//
-//        Long userId = (Long) session.getAttribute(WebConsts.USER_ID);
-//
-//        if (userId == null) {
-//            response.sendRedirect(request.getContextPath() + "/login?returnPath=" + returnPath(request));
-//
-//            return false;
-//        }
-//
-//        List<String> permissionList = (ArrayList<String>) session.getAttribute(WebConsts.USER_PERMISSION);
-//
-//        if (permissionList != null && permissionList.size() > 0) {
-//            String pattern = String.join("|", permissionList);
-//
-//            if (!returnPath.matches(pattern)) {
-//                throw new AccessDeniedException("Access Denied");
-//            }
-//        }
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        String username = null;
+        String jwt = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwt = authorizationHeader.substring(7);
+            username = jwtTokenUtil.extractUsername(jwt);
+        }
+
+        if (username != null) {
+            if (!jwtTokenUtil.validateToken(jwt, username)) {
+                throw new SystemException("REST signature failed validation.");
+            }
+        }
 
         return true;
     }
