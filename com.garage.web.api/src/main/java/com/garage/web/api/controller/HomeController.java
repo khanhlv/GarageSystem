@@ -2,8 +2,8 @@ package com.garage.web.api.controller;
 
 import com.garage.common.anotation.AllowAnonymous;
 import com.garage.common.dto.response.ResponseDto;
-import com.garage.model.Garage;
-import com.garage.service.GarageJDBCRepository;
+import com.garage.service.GarageService;
+import com.garage.service.repository.GarageRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -19,7 +19,7 @@ public class HomeController {
 
 
     @Autowired
-    private GarageJDBCRepository garageJDBCRepository;
+    private GarageService garageService;
 
     @GetMapping("/")
     @AllowAnonymous
@@ -28,12 +28,11 @@ public class HomeController {
         return ResponseEntity.ok("1");
     }
 
-
     @GetMapping("/test")
     @AllowAnonymous
     @ApiOperation(value = "Test API Home")
     public ResponseDto test() {
-        return ResponseDto.build().withData(garageJDBCRepository.findAll());
+        return ResponseDto.build().withData(garageService.findAll());
     }
 
 }
