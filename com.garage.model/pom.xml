@@ -11,5 +11,43 @@
 
     <artifactId>com.garage.model</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <jdbc>
+                                <driver>com.mysql.cj.jdbc.Driver</driver>
+                                <url>jdbc:mysql://45.32.100.93:3306/garage_system?useUnicode=yes&amp;characterEncoding=UTF-8</url>
+                                <user>garage_system</user>
+                                <password>fpLMDip5H1s@</password>
+                            </jdbc>
+                            <generator>
+                                <name>org.jooq.codegen.JavaGenerator</name>
+                                <database>
+                                    <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                                    <includes>.*</includes>
+                                    <excludes />
+                                    <inputSchema>garage_system</inputSchema>
+                                </database>
+                                <target>
+                                    <packageName>com.garage.model.jooq</packageName>
+                                    <directory>src/main/java</directory>
+                                </target>
+                            </generator>
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

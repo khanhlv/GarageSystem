@@ -11,5 +11,12 @@
 
     <artifactId>com.garage.service</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.garage</groupId>
+            <artifactId>com.garage.model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

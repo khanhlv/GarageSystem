@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.garage.common.interceptor.RequestInterceptor;
+import com.garage.web.api.interceptor.RequestInterceptor;
 
 
 @Configuration

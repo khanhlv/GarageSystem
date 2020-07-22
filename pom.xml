@@ -116,43 +116,4 @@
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
     </repositories>
-
-    <!--<build>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.jooq</groupId>-->
-                <!--<artifactId>jooq-codegen-maven</artifactId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>generate</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<jdbc>-->
-                                <!--<driver>com.mysql.cj.jdbc.Driver</driver>-->
-                                <!--<url>jdbc:mysql://127.0.0.1:3306/product</url>-->
-                                <!--<user>dbaccount</user>-->
-                                <!--<password>secretpassword</password>-->
-                            <!--</jdbc>-->
-                            <!--<generator>-->
-                                <!--<name>org.jooq.codegen.JavaGenerator</name>-->
-                                <!--<database>-->
-                                    <!--<name>org.jooq.meta.mysql.MySQLDatabase</name>-->
-                                    <!--<includes>.*</includes>-->
-                                    <!--<excludes />-->
-                                    <!--<inputSchema>dbo</inputSchema>-->
-                                <!--</database>-->
-                                <!--<target>-->
-                                    <!--<packageName>com.garage.model.jooq</packageName>-->
-                                    <!--<directory>src/main/java</directory>-->
-                                <!--</target>-->
-                            <!--</generator>-->
-
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-    <!--</build>-->
 </project>
