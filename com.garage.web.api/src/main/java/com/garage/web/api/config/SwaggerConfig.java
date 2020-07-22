@@ -46,7 +46,7 @@ public class SwaggerConfig {
                 .produces(producesAndConsumes)
                 .consumes(producesAndConsumes)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.learning.controller.rest"))
+                .apis(RequestHandlerSelectors.basePackage("com.garage.web.api"))
                 .paths(PathSelectors.any())
                 .build()
                 .securitySchemes(new ArrayList<>(Arrays.asList(new ApiKey("Bearer %token", "Authorization", "Header"))))//
