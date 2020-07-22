@@ -1,24 +1,21 @@
 package com.garage.web.api.interceptor;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang3.StringUtils;
+import com.garage.common.anotation.AllowAnonymous;
+import com.garage.common.exception.AuthorizationException;
+import com.garage.utils.JwtTokenUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
-import com.garage.common.anotation.AllowAnonymous;
-import com.garage.common.exception.AuthorizationException;
-import com.garage.common.exception.SystemException;
-import com.garage.utils.JwtTokenUtil;
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 
 @Slf4j
 public class RequestInterceptor extends HandlerInterceptorAdapter {
@@ -39,19 +36,22 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        final String authorizationHeader = request.getHeader("Authorization");
+        if (method.isAnnotationPresent(GetMapping.class) || method.isAnnotationPresent(PutMapping.class) ||
+                method.isAnnotationPresent(DeleteMapping.class) || method.isAnnotationPresent(PostMapping.class)) {
+            final String authorizationHeader = request.getHeader("Authorization");
 
-        String username = null;
-        String jwt = null;
+            String username = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
-            username = jwtTokenUtil.extractUsername(jwt);
-        }
+            if (authorizationHeader != null) {
+                username = jwtTokenUtil.extractUsername(authorizationHeader);
+            }
 
-        if (username != null) {
-            if (!jwtTokenUtil.validateToken(jwt, username)) {
-                throw new AuthorizationException("REST signature failed validation.");
+            if (username == null) {
+                throw new AuthorizationException("Bạn chưa đăng nhập. Xin vui lòng đăng nhập.", -1);
+            }
+
+            if (!jwtTokenUtil.validateToken(authorizationHeader, username)) {
+                throw new AuthorizationException("Phiên làm việc của bạn đã hết hạn.", 9);
             }
         }
 

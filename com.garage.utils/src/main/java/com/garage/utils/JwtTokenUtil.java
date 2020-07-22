@@ -1,12 +1,13 @@
 package com.garage.utils;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -40,15 +41,7 @@ public class JwtTokenUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String userId) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("test", 1);
-        claims.put("test1", "111");
-        claims.put("test2", "222");
-        return createToken(claims, userId);
-    }
-
-    private String createToken(Map<String, Object> claims, String subject) {
+    public String createToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder()
                 .setClaims(claims)

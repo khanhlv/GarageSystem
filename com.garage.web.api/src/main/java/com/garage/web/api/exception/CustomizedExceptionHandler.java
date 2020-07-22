@@ -1,17 +1,15 @@
 package com.garage.web.api.exception;
 
-import java.util.Date;
-
 import com.garage.common.dto.error.ErrorDto;
 import com.garage.common.dto.response.ResponseDto;
 import com.garage.common.exception.AuthorizationException;
 import com.garage.common.exception.SystemException;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.Date;
 
 @ControllerAdvice
 @RestController
@@ -23,9 +21,9 @@ public class CustomizedExceptionHandler {
         ErrorDto errorDto = new ErrorDto();
         errorDto.setTimestamp(new Date().getTime());
         errorDto.setMessage(ex.getMessage());
-        errorDto.setCode(-1);
+        errorDto.setCode(ex.getCode());
 
-        return ResponseDto.build().withError(errorDto);
+        return ResponseDto.build().error(errorDto);
     }
 
     @ExceptionHandler(SystemException.class)
@@ -36,7 +34,7 @@ public class CustomizedExceptionHandler {
         errorDto.setMessage(ex.getMessage());
         errorDto.setCode(99);
 
-        return ResponseDto.build().withError(errorDto);
+        return ResponseDto.build().error(errorDto);
     }
 
 }

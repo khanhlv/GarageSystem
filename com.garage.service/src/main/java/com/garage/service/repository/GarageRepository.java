@@ -1,15 +1,12 @@
 package com.garage.service.repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
+import com.garage.model.Garage;
+import com.garage.service.mapper.GarageRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.garage.model.Garage;
-import com.garage.service.mapper.GarageRowMapper;
+import java.util.List;
 
 @Repository
 public class GarageRepository {
