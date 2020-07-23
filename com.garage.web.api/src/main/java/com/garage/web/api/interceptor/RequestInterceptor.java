@@ -1,9 +1,10 @@
 package com.garage.web.api.interceptor;
 
-import com.garage.common.anotation.AllowAnonymous;
-import com.garage.common.exception.AuthorizationException;
-import com.garage.common.security.TokenProvider;
-import lombok.extern.slf4j.Slf4j;
+import java.lang.reflect.Method;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +14,10 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
+import com.garage.common.anotation.AllowAnonymous;
+import com.garage.common.exception.AuthorizationException;
+import com.garage.common.security.TokenProvider;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class RequestInterceptor extends HandlerInterceptorAdapter {
@@ -43,17 +45,21 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
             String username = null;
             String jwt = null;
 
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-                jwt = authorizationHeader.substring(7);
-                username = tokenProvider.extractUsername(jwt);
-            }
+            try {
+                if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                    jwt = authorizationHeader.substring(7);
+                    username = tokenProvider.extractUsername(jwt);
+                }
 
-            if (username == null) {
-                throw new AuthorizationException("Bạn chưa đăng nhập. Xin vui lòng đăng nhập.", -1);
-            }
+                if (username == null) {
+                    throw new AuthorizationException("Bạn chưa đăng nhập. Xin vui lòng đăng nhập.", -1);
+                }
 
-            if (!tokenProvider.validateToken(jwt, username)) {
-                throw new AuthorizationException("Phiên làm việc của bạn đã hết hạn.", 9);
+                if (!tokenProvider.validateToken(jwt, username)) {
+                    throw new AuthorizationException("Phiên làm việc của bạn đã hết hạn.", 9);
+                }
+            } catch (Exception ex) {
+                throw new AuthorizationException("Bạn chưa đăng nhập. Xin vui lòng đăng nhập.", ex, -1);
             }
         }
 
