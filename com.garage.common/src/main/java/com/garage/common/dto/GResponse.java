@@ -1,10 +1,9 @@
-package com.garage.common.dto.response;
-
+package com.garage.common.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public class ResponseDto<T> {
+public class GResponse<T> {
 
     @Getter
     @Setter
@@ -14,24 +13,23 @@ public class ResponseDto<T> {
     @Setter
     private T data;
 
-    private ResponseDto() {
+    private GResponse() {
 
     }
 
-    public ResponseDto data(T data) {
+    public GResponse data(T data) {
         this.status = 1;
         this.data = data;
         return this;
     }
 
-    public ResponseDto error(T data) {
+    public GResponse error(T data) {
         this.status = 0;
         this.data = data;
         return this;
     }
 
-    public static ResponseDto build() {
-        return new ResponseDto<>();
+    public static GResponse build() {
+        return new GResponse<>();
     }
-
 }

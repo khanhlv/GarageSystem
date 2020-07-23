@@ -3,7 +3,7 @@ package com.garage.common.dto.error;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ErrorDto {
+public class ErrorResponse {
 
     @Getter
     @Setter

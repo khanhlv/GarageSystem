@@ -1,13 +1,14 @@
 package com.garage.web.api.controller;
 
-import com.garage.common.dto.response.ResponseDto;
-import com.garage.service.GarageService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.garage.common.dto.GResponse;
+import com.garage.service.GarageService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 
 @RestController
@@ -20,14 +21,14 @@ public class GarageController {
 
     @GetMapping("/list")
     @ApiOperation(value = "Danh sách gara ô tô")
-    public ResponseDto list() {
-        return ResponseDto.build().data(garageService.findAll());
+    public GResponse list() {
+        return GResponse.build().data(garageService.findAll());
     }
 
     @GetMapping("/list1")
     @ApiOperation(value = "Danh sách gara ô tô")
-    public ResponseDto list1() {
-        return ResponseDto.build().data("1111");
+    public GResponse list1() {
+        return GResponse.build().data("1111");
     }
 
 }

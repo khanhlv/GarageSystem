@@ -2,7 +2,7 @@ package com.garage.web.api.interceptor;
 
 import com.garage.common.anotation.AllowAnonymous;
 import com.garage.common.exception.AuthorizationException;
-import com.garage.utils.JwtTokenUtil;
+import com.garage.common.security.TokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 public class RequestInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private TokenProvider tokenProvider;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -41,16 +41,18 @@ public class RequestInterceptor extends HandlerInterceptorAdapter {
             final String authorizationHeader = request.getHeader("Authorization");
 
             String username = null;
+            String jwt = null;
 
-            if (authorizationHeader != null) {
-                username = jwtTokenUtil.extractUsername(authorizationHeader);
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                jwt = authorizationHeader.substring(7);
+                username = tokenProvider.extractUsername(jwt);
             }
 
             if (username == null) {
                 throw new AuthorizationException("Bạn chưa đăng nhập. Xin vui lòng đăng nhập.", -1);
             }
 
-            if (!jwtTokenUtil.validateToken(authorizationHeader, username)) {
+            if (!tokenProvider.validateToken(jwt, username)) {
                 throw new AuthorizationException("Phiên làm việc của bạn đã hết hạn.", 9);
             }
         }

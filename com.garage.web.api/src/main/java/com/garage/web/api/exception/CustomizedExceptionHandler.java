@@ -1,7 +1,7 @@
 package com.garage.web.api.exception;
 
-import com.garage.common.dto.error.ErrorDto;
-import com.garage.common.dto.response.ResponseDto;
+import com.garage.common.dto.GResponse;
+import com.garage.common.dto.error.ErrorResponse;
 import com.garage.common.exception.AuthorizationException;
 import com.garage.common.exception.SystemException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,25 +16,25 @@ import java.util.Date;
 public class CustomizedExceptionHandler {
 
     @ExceptionHandler(AuthorizationException.class)
-    public final ResponseDto handleException(AuthorizationException ex, WebRequest request) {
+    public final GResponse handleException(AuthorizationException ex, WebRequest request) {
 
-        ErrorDto errorDto = new ErrorDto();
-        errorDto.setTimestamp(new Date().getTime());
-        errorDto.setMessage(ex.getMessage());
-        errorDto.setCode(ex.getCode());
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(new Date().getTime());
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setCode(ex.getCode());
 
-        return ResponseDto.build().error(errorDto);
+        return GResponse.build().error(errorResponse);
     }
 
     @ExceptionHandler(SystemException.class)
-    public final ResponseDto handleException(SystemException ex, WebRequest request) {
+    public final GResponse handleException(SystemException ex, WebRequest request) {
 
-        ErrorDto errorDto = new ErrorDto();
-        errorDto.setTimestamp(new Date().getTime());
-        errorDto.setMessage(ex.getMessage());
-        errorDto.setCode(99);
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setTimestamp(new Date().getTime());
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setCode(99);
 
-        return ResponseDto.build().error(errorDto);
+        return GResponse.build().error(errorResponse);
     }
 
 }
