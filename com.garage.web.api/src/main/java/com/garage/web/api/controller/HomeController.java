@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.garage.common.anotation.AllowAnonymous;
+import com.garage.common.dto.GRequest;
 import com.garage.common.dto.GResponse;
 import com.garage.common.security.TokenProvider;
 import com.garage.web.api.dto.login.LoginRequest;
@@ -35,14 +36,14 @@ public class HomeController {
     @PostMapping("/login")
     @AllowAnonymous
     @ApiOperation(value = "Đăng nhập")
-    public GResponse login(@RequestBody LoginRequest request) {
+    public GResponse login(@RequestBody GRequest<LoginRequest> request) {
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", request.getUsername());
+        claims.put("username", request.getData().getUsername());
         claims.put("fullname", "Lại Văn Khánh");
         claims.put("email", "khanhlv@gmail.com");
 
-        String token = tokenProvider.createToken(claims, request.getUsername());
+        String token = tokenProvider.createToken(claims, request.getData().getUsername());
 
         return GResponse.build().data(new LoginResponse(token));
     }
