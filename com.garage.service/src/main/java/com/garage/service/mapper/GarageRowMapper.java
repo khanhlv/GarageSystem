@@ -12,9 +12,9 @@ public class GarageRowMapper implements RowMapper<Garage> {
     @Override
     public Garage mapRow(ResultSet rs, int rowNum) throws SQLException {
         Garage garage = new Garage();
-        garage.setId(rs.getLong("id"));
+        garage.setId(rs.getInt("id"));
         garage.setName(rs.getString("name"));
-        garage.setStatus(rs.getLong("status"));
+        garage.setStatus(rs.getInt("status"));
         return garage;
     }
 }
